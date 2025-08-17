@@ -8,73 +8,26 @@
 >
 >- (`Mapperly`) 是一个高性能对象映射(`Object Mapping`)
 >
->  <span style='color:red'>[ 它通过源生成器`Source Generator`在编译时自动生成类型之间的映射代码，避免了运行时的反射开销，从而提升了性能和类型安全性 ]</span>
+>   <span style='color:red'>[ 它通过源生成器`Source Generator`在编译时自动生成类型之间的映射代码，避免了运行时的反射开销，从而提升了性能和类型安全性 ]</span>
 >
->  [<span style='color:#008B00'>[👓 GitHub - Riok.Mapperly ]</span>](https://github.com/riok/mapperly ':target=_blank') [<span style='color:#008B00'>[👓 官方文档 ]</span>](https://mapperly.riok.app/docs/intro/ ':target=_blank')
+>   [<span style='color:#008B00'>[👓 GitHub - Riok.Mapperly ]</span>](https://github.com/riok/mapperly ':target=_blank') [<span style='color:#008B00'>[👓 官方文档 ]</span>](https://mapperly.riok.app/docs/intro/ ':target=_blank')
+>
+>
+><br/>
+>
+><span style='color:Blue'>[`Mapperly`在创建目标`target`对象时，遵循以下原则，自动选则目标类型的构造函数 ]：</span>
+>
+>- <span style='color:red'>[`A`] 优先使用标记`[MapperConstructor]`的构造函数</span>
+>
+>- [`B`] 配置`PreferParameterlessConstructors = true`<span style='color:Blue'>[ 系统默认 ]</span>
+>
+>   \- <span style='color:red'>优先使用 [ 默认构造函数 ]</span>
+>
+>   \- <span style='color:red'>如果没有无参构造函数，则查找所有可访问的构造函数 [ 优先选择参数最多 + 且能全部映射的构造函数 ]</span>
+>
+>- [`C`] 配置`PreferParameterlessConstructors = false`<span style='color:red'>[ 跟`B`相反，最后考虑默认构造函数 ]</span>
+>
+>⚠ <span style='color:red'>[ 框架依然会对：目标类型中未通过构造函数参数赋值的 - 可写属性进行赋值 ]</span>
 >
 ><br/>
 
-```csharp
-# [ 源类型 ]
-public class T1(string Description);
-public record class T2(int Id, string Name);
-public enum CarColor { Black = 1, Blue = 2, White = 3 }
-
-public class T1Class
-{
-     public string Name { get; set; } = string.Empty;
-     public int Age { get; set; }
-     public CarColor Color { get; set; }
-     public T1? T1 { get; set; }
-     public List<T2> T2s { get; } = [];
-}
-    
-# [ 目标类型 ]
-public class T1Dto(string Description);
-public record class T2Dto(int Id, string Name);
-public enum CarColorDto { Black = 1, Blue = 2, White = 3 }
-
-public class T3ClassDto
-{
-     public string Name { get; set; } = string.Empty;
-     public int Age { get; set; }
-     public CarColor Color { get; set; }
-     public T1? T1 { get; set; }
-     public List<T2> T2s { get; } = [];
-}
-
-
-```
-
-```csharp
-# [ 类型映射器 ]
-[Mapper]
-public static partial class MapperConfiguration
-{
-
-     public static partial T3ClassDto Map(T3Class @class);
-}
-
-
-```
-
-
-
->```csharp
->T3Class t3Class = new()
->{
->     Name = "Test",
->     Age = 30,
->     Color = CarColor.Blue,
->     T1 = new("Description"),
->     T2s = [new(1, "Name1"), new(2, "Name2")]
->};
->
->T3ClassDto t3ClassDto = MapperConfiguration.Map(t3Class);
->Console.WriteLine($"Name: {t3ClassDto.Name}, Age: {t3ClassDto.Age}, Color: {t3ClassDto.Color}");
->
->```
->
->
->
->
