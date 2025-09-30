@@ -19,13 +19,13 @@
 >
 >- <span style='color:red'>[`A`] 优先使用标记`[MapperConstructor]`的构造函数</span>
 >
->- [`B`] 配置`PreferParameterlessConstructors = true`<span style='color:Blue'>[ 系统默认 ]</span>
+>- [`B.1`] 配置`PreferParameterlessConstructors = true`<span style='color:Blue'>[ 系统默认 ]</span>
 >
->   \- <span style='color:red'>优先使用 [ 默认构造函数 ]</span>
+>   <span style='color:red'>优先使用 [ 默认构造函数 ]</span>
 >
->   \- <span style='color:red'>如果没有无参构造函数，则查找所有可访问的构造函数 [ 优先选择参数最多 + 且能全部映射的构造函数 ]</span>
+>   <span style='color:red'>如果没有无参构造函数，则查找所有可访问的构造函数 [ 优先选择参数最多 + 且能全部映射的构造函数 ]</span>
 >
->- [`C`] 配置`PreferParameterlessConstructors = false`<span style='color:red'>[ 跟`B`相反，最后考虑默认构造函数 ]</span>
+>- [`B.2`] 配置`PreferParameterlessConstructors = false`<span style='color:red'>[ 跟`B`相反，最后考虑默认构造函数 ]</span>
 >
 >⚠ <span style='color:red'>[ 框架依然会对：目标类型中未通过构造函数参数赋值的 - 可写属性进行赋值 ]</span>
 >
